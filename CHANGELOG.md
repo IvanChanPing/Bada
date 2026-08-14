@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-14 — Tap to Share UI demo
+
+- Added an isolated `uiDemo` build variant whose launcher is a blank white page with one `Start Tap to Share` button.
+- The button opens the production Tap-to-Share edge glow without starting NFC, radios, discovery, Name Card, or a transfer. The compiled demo manifest removes every production component and retains only the visual launcher's `VIBRATE` permission.
+- Ordinary debug and release launchers remain unchanged; the demo installs separately as `dev.bluehouse.bada.uidemo`.
+- Canonical demo artifact: `bada-fork-uidemo.apk` (SHA-256 `340c1a8e04667b90bf427280183a8fb86effcf7afa297ef126f19c1fe177a15a`).
+
 ## 2026-08-14 — Google Tap to Share file handoff
 
 - Added an independent Google-compatible Tap to Share file-transfer path using the primary Gesture Exchange AID, exact Noise handshake, encrypted protobuf handover, and live Wi-Fi Direct credentials.

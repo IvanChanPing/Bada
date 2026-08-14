@@ -99,6 +99,12 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
+        create("uiDemo") {
+            applicationIdSuffix = ".uidemo"
+            isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("debug")
+        }
         release {
             isMinifyEnabled = false
             if (releaseSigningInputs != null) {

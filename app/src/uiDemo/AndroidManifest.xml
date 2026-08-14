@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission
+        android:name="android.permission.NEARBY_WIFI_DEVICES"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.POST_PROMOTED_NOTIFICATIONS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADVERTISE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="dev.bluehouse.bada.radiohelper.permission.BIND_RADIO"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.NFC"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.CHANGE_WIFI_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.USE_FULL_SCREEN_INTENT"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_NUMBERS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WRITE_CONTACTS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        tools:node="remove" />
+
+    <uses-feature
+        android:name="android.hardware.nfc.hce"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.wifi.aware"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.wifi.direct"
+        tools:node="remove" />
+
+    <permission
+        android:name="${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        tools:node="remove" />
+
+    <queries tools:node="remove" />
+
+    <application
+        android:name=".demo.TapShareUiDemoApplication"
+        android:label="@string/app_name"
+        tools:replace="android:name">
+        <meta-data
+            android:name="preloaded_fonts"
+            tools:node="remove" />
+
+        <activity
+            android:name=".MainActivity"
+            tools:node="remove" />
+
+        <activity
+            android:name=".onboarding.PermissionsOnboardingActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".ui.CreditActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".update.CheckForUpdatesActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".send.SendActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".send.SendActivityInApp"
+            tools:node="remove" />
+        <activity
+            android:name=".send.ShowQrActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".consent.ConsentTrampolineActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".namecard.NameCardSetupActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".namecard.NameCardTransferActivity"
+            tools:node="remove" />
+
+        <service
+            android:name=".nfc.BadaNdefApduService"
+            tools:node="remove" />
+        <service
+            android:name=".nfc.BadaTapHceService"
+            tools:node="remove" />
+        <service
+            android:name=".gestureexchange.GestureExchangeHceService"
+            tools:node="remove" />
+        <service
+            android:name=".tile.BadaQuickShareTileService"
+            tools:node="remove" />
+        <service
+            android:name=".namecard.NameCardExchangeService"
+            tools:node="remove" />
+        <service
+            android:name=".nfc.NameCardHceService"
+            tools:node="remove" />
+        <service
+            android:name="dev.bluehouse.bada.service.receiver.ReceiverForegroundService"
+            tools:node="remove" />
+
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            tools:node="remove" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            tools:node="remove" />
+
+        <activity
+            android:name=".demo.TapShareUiDemoActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
