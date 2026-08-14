@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tap to Share UI Demo</string>
+    <string name="demo_title">Tap to Share UI</string>
+    <string name="demo_subtitle">Explore the visual states without starting a transfer</string>
+    <string name="demo_glow">Glow animation</string>
+    <string name="demo_contact">Contact sharing</string>
+    <string name="demo_photo">Photo sending</string>
+    <string name="demo_back">Back to demos</string>
     <string name="tap_share_demo_start">Start Tap to Share</string>
     <string name="tap_share_demo_complete">Play Second Half</string>
+    <string name="contact_name_camille">Camille Walsh</string>
+    <string name="contact_name_danielle">Danielle Holmes</string>
+    <string name="contact_share_status">Share your contact info</string>
+    <string name="contact_received_status">Contact received</string>
+    <string name="contact_picture">Picture</string>
+    <string name="contact_personal">Personal</string>
+    <string name="contact_mobile">Mobile</string>
+    <string name="contact_email">Email</string>
+    <string name="contact_phone_value">+1 949-555-0198</string>
+    <string name="contact_email_value">camille.c.walsh@gmail.com</string>
+    <string name="contact_receive_only">Receive only</string>
+    <string name="contact_share">Share</string>
+    <string name="contact_show_received">Show received contact</string>
+    <string name="contact_save">Save contact</string>
+    <string name="photo_quick_share">Quick Share</string>
+    <string name="photo_one_selected">1 image selected</string>
+    <string name="photo_select_device">Select device to start sharing</string>
+    <string name="photo_looking">Looking for nearby devices…</string>
+    <string name="photo_device">Danielle’s Pixel 10</string>
+    <string name="photo_incoming">Danielle is sharing with you</string>
+    <string name="photo_filename">IMG_20260814_0930.jpg</string>
+    <string name="photo_filesize">2.4 MB · 1 image</string>
+    <string name="photo_decline">Decline</string>
+    <string name="photo_accept">Accept</string>
+    <string name="photo_receiving">Receiving…</string>
+    <string name="photo_progress">68%</string>
+    <string name="photo_show_complete">Show completed state</string>
+    <string name="photo_received">Received</string>
+    <string name="photo_received_from">Received 1 image from Danielle</string>
+    <string name="photo_open">Open</string>
+    <string name="photo_done">Done</string>
 </resources>

@@ -2,10 +2,11 @@
 
 ## 2026-08-14 — Tap to Share UI demo
 
-- Added an isolated `uiDemo` build variant whose launcher is a blank white page with staged `Start Tap to Share` and `Play Second Half` buttons.
-- The first button opens the production Tap-to-Share edge glow; the second plays its production completion sweep. Neither starts NFC, radios, discovery, Name Card, or a transfer. The compiled demo manifest removes every production component and retains only the visual launcher's `VIBRATE` permission.
+- Expanded the isolated `uiDemo` launcher into a three-mode visual gallery: the staged Tap-to-Share glow, contact sharing, and photo sending.
+- Contact sharing reproduces the Google-announcement field-selection and received-contact sheets. Photo sending walks through the exact Pixel 10 GMS Quick Share labels for device selection, incoming Accept/Decline, progress, and completion using bundled synthetic data and artwork.
+- The first glow button opens the production Tap-to-Share edge glow; the second plays its production completion sweep. The contact/photo modes only replace local Views. None starts NFC, radios, discovery, a picker, a contact provider, Name Card, or a transfer. The compiled demo manifest removes every production component and retains only the visual launcher's `VIBRATE` permission.
 - Ordinary debug and release launchers remain unchanged; the demo installs separately as `dev.bluehouse.bada.uidemo`.
-- Canonical demo artifact: `bada-fork-uidemo.apk` (SHA-256 `c569312190f267207a6c08797065241a228c25ecdb4ae2114f0f3ebb892d0b5c`).
+- Canonical demo artifact: `bada-fork-uidemo.apk` (SHA-256 `9a88f05f16f0fada73546ead8e13a8ebafe086f3fe5911373c703245c3de813b`).
 
 ## 2026-08-14 — Google Tap to Share file handoff
 

@@ -4,21 +4,10 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <Button
-        android:id="@+id/tap_share_demo_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:minWidth="220dp"
-        android:text="@string/tap_share_demo_start" />
-
-    <Button
-        android:id="@+id/tap_share_demo_complete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:minWidth="220dp"
-        android:text="@string/tap_share_demo_complete"
-        android:visibility="gone" />
+    <!-- demo_screen_host — full-screen white stage; contains exactly one selected visual demo. -->
+    <FrameLayout
+        android:id="@+id/tap_share_demo_host"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>
