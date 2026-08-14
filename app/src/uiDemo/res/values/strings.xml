@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Tap to Share UI Demo</string>
     <string name="tap_share_demo_start">Start Tap to Share</string>
+    <string name="tap_share_demo_complete">Play Second Half</string>
 </resources>

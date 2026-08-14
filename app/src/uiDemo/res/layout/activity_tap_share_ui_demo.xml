@@ -12,4 +12,13 @@
         android:minWidth="220dp"
         android:text="@string/tap_share_demo_start" />
 
+    <Button
+        android:id="@+id/tap_share_demo_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="220dp"
+        android:text="@string/tap_share_demo_complete"
+        android:visibility="gone" />
+
 </FrameLayout>
