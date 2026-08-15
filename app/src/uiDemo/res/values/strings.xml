@@ -40,4 +40,6 @@
     <string name="photo_received_from">Received 1 image from Danielle</string>
     <string name="photo_open">Open</string>
     <string name="photo_done">Done</string>
+    <string name="photo_scanning_animation">Quick Share scanning for nearby devices</string>
+    <string name="photo_receive_ready_animation">Quick Share ready to receive</string>
 </resources>

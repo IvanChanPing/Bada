@@ -8,6 +8,7 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 data class ReleaseSigningInputs(
@@ -121,6 +122,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
         // BuildConfig is opt-in on AGP 8+; UpdateRepository reads
         // BuildConfig.VERSION_NAME to compare the installed app against
         // the latest GitHub release tag, so it needs to be generated.
@@ -168,6 +170,17 @@ dependencies {
     // MaterialComponents.*.Bridge variant so existing AppCompat-based
     // widgets keep working unchanged.
     implementation(libs.material)
+
+    // The separately installed uiDemo renders the exact bundled GMS Quick
+    // Share JSON animations and the APK-owned Compose Material contact sheet.
+    // The compiler plugin is module-wide, so ordinary variants need the
+    // runtime on their compile classpath; compileOnly keeps it out of their APKs.
+    compileOnly(platform(libs.compose.bom))
+    compileOnly(libs.compose.runtime)
+    add("uiDemoImplementation", libs.lottie)
+    add("uiDemoImplementation", platform(libs.compose.bom))
+    add("uiDemoImplementation", libs.compose.ui)
+    add("uiDemoImplementation", libs.compose.material3)
 
     // ZXing core — pure-Java QR encoder used to render the Quick Share QR
     // URL as a scannable bitmap on ShowQrActivity (#84). Only the encoder

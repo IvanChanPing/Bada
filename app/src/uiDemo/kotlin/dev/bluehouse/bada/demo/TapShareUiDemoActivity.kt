@@ -22,8 +22,10 @@ import dev.bluehouse.bada.gestureexchange.GestureVisualSignal
  * production component and non-visual permission, so no NFC, radio, discovery,
  * contact-provider, media-picker, Name Card, or transfer path is available.
  *
- * Status: source-grounded UI reconstruction. Build/manifest status is recorded
- * in the task journal; this iteration intentionally has no device click test.
+ * Status: exact-APK-derived visual port. Contact uses the Pixel Material sheet
+ * owner and lifecycle; photo uses Quick Share's source-owned assets, sizes,
+ * target-list structure, and progress spec. Verification stays in the private
+ * task journal rather than this source contract.
  */
 class TapShareUiDemoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTapShareUiDemoBinding

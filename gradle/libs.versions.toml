@@ -23,6 +23,8 @@ androidxDynamicAnimation = "1.0.0"
 # from. Pulled in by :app for the in-app bottom navigation between the
 # send/receive tab and the settings tab.
 material = "1.12.0"
+lottie = "6.7.1"
+composeBom = "2026.05.00"
 
 # Coroutines
 kotlinxCoroutines = "1.9.0"
@@ -76,6 +78,11 @@ androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimati
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
 # `lifecycle-process` exposes [androidx.lifecycle.ProcessLifecycleOwner],
 # the singleton LifecycleOwner that tracks "is any activity of this app
 # foreground". The receiver foreground service uses it (#35) to switch
@@ -130,6 +137,7 @@ detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", 
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintPlugin" }

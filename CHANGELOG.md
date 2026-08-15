@@ -1,12 +1,14 @@
 # Changelog
 
-## 2026-08-14 — Tap to Share UI demo
+## 2026-08-15 — Exact APK-derived Tap to Share UI demo
 
-- Expanded the isolated `uiDemo` launcher into a three-mode visual gallery: the staged Tap-to-Share glow, contact sharing, and photo sending.
-- Contact sharing reproduces the Google-announcement field-selection and received-contact sheets. Photo sending walks through the exact Pixel 10 GMS Quick Share labels for device selection, incoming Accept/Decline, progress, and completion using bundled synthetic data and artwork.
-- The first glow button opens the production Tap-to-Share edge glow; the second plays its production completion sweep. The contact/photo modes only replace local Views. None starts NFC, radios, discovery, a picker, a contact provider, Name Card, or a transfer. The compiled demo manifest removes every production component and retains only the visual launcher's `VIBRATE` permission.
-- Ordinary debug and release launchers remain unchanged; the demo installs separately as `dev.bluehouse.bada.uidemo`.
-- Canonical demo artifact: `bada-fork-uidemo.apk` (SHA-256 `9a88f05f16f0fada73546ead8e13a8ebafe086f3fe5911373c703245c3de813b`).
+- Replaced the reconstructed contact motion with the Pixel GMS 26.30.32 Material modal-sheet owner, state split, and hide-before-callback lifecycle recovered from `ContactExchangeChimeraActivity` and its Pixel renderer.
+- Replaced the reconstructed photo animation placement with Quick Share's owning unified branches: the exact bundled scanner and receive-ready JSON payloads at their source-owned 60 dp and 24 dp sizes, a top-pivot target-list reveal, and the exact 500 ms `(0.65, 0, 0.35, 1)` progress easing.
+- Removed `transfer_success_lottie` after its actual owner proved to be eSIM transfer rather than Quick Share; Quick Share completion remains its unified `Received` card/status state.
+- Preserved the existing two-part production edge glow and kept all contact/photo data synthetic. The isolated `.uidemo` package starts no NFC, radio, discovery, provider, Name Card, or transfer path and retains only `VIBRATE`.
+- `ktlintCheck`, `detekt`, and `assembleUiDemo` passed. Runtime UI playback was intentionally not used as source-fidelity evidence and remains unverified for this build.
+- Verified the ordinary debug variant after enabling the module-wide Compose compiler. A BOM-managed `compileOnly` runtime satisfies compilation without defining Compose packages in the ordinary debug APK; full Compose/Lottie packaging remains `uiDemo`-only.
+- Canonical demo artifact: `bada-fork-uidemo.apk` (29,265,815 bytes; SHA-256 `4ba8eb9e5b948881dc812f2e77b56903175abfd2ed4779425fc50009739091e1`).
 
 ## 2026-08-14 — Google Tap to Share file handoff
 

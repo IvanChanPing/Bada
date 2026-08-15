@@ -5,6 +5,7 @@
  */
 package dev.bluehouse.bada.demo
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
@@ -16,21 +17,46 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
+import android.view.animation.PathInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.unit.dp
+import androidx.core.view.doOnPreDraw
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import dev.bluehouse.bada.R
+import kotlinx.coroutines.launch
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 /**
  * Builds the screens shown by “Tap to Share UI Demo.”
  *
- * Contact screens reproduce the visible structure and labels observed in the
- * Google announcement frames. Photo screens reproduce the Quick Share state
- * sequence and labels recovered from Pixel 10 GMS 26.30.32 resources. All data
- * and artwork are synthetic; button callbacks only replace the current View.
+ * Contact screens port the Pixel branch's Material modal-sheet structure and
+ * hide-before-callback lifecycle recovered from GMS 26.30.32. Photo screens
+ * port Quick Share's exact scanner/receive Lottie payloads, source-owned sizes,
+ * list reveal structure, and 500 ms progress timing. All data and artwork are
+ * synthetic; button callbacks only replace the current View.
  *
  * Visual map: pale full-screen stage; rounded white 32 dp cards/sheets; green
  * primary pills; 64 dp initial avatars; a drawn landscape preview. The top-left
@@ -47,6 +73,10 @@ internal object TapShareDemoScreens {
     private const val GREEN = 0xFF47642F.toInt()
     private const val GREEN_SOFT = 0xFFE1EBCF.toInt()
     private const val OUTLINE = 0xFFCACBC3.toInt()
+    private const val QUICK_SHARE_LIST_TWEEN_MS = 400L
+    private const val QUICK_SHARE_PROGRESS_MS = 500L
+    private val listRevealMotion = PathInterpolator(0.2f, 0f, 0f, 1f)
+    private val progressMotion = PathInterpolator(0.65f, 0f, 0.35f, 1f)
 
     fun menu(
         context: Context,
@@ -90,42 +120,12 @@ internal object TapShareDemoScreens {
         context: Context,
         onBack: () -> Unit,
         onReceived: () -> Unit,
-    ): View =
-        contactStage(context, onBack) {
-            addView(title(context, R.string.contact_name_camille, 20f, Gravity.CENTER_HORIZONTAL))
-            addView(label(context, R.string.contact_share_status, 13f, MUTED, Gravity.CENTER_HORIZONTAL))
-            addView(selectableRow(context, R.string.contact_picture, R.string.contact_personal, checked = true))
-            addView(selectableRow(context, R.string.contact_phone_value, R.string.contact_mobile, checked = true))
-            addView(selectableRow(context, R.string.contact_email_value, R.string.contact_email, checked = true))
-            addView(
-                horizontal(context).apply {
-                    addView(outlineButton(context, R.string.contact_receive_only) {}, weightParams(1f, end = 8))
-                    addView(primaryButton(context, R.string.contact_share, onReceived), weightParams(1f))
-                },
-                matchWrap(top = 12),
-            )
-            addView(outlineButton(context, R.string.contact_show_received, onReceived), matchWrap(top = 8))
-        }
+    ): View = contactStage(context, onBack, received = false, onAdvance = onReceived)
 
     fun contactReceived(
         context: Context,
         onBack: () -> Unit,
-    ): View =
-        contactStage(context, onBack) {
-            addView(title(context, R.string.contact_name_danielle, 20f, Gravity.CENTER_HORIZONTAL))
-            addView(label(context, R.string.contact_received_status, 13f, MUTED, Gravity.CENTER_HORIZONTAL))
-            addView(
-                infoRow(
-                    context,
-                    "DH",
-                    context.getString(R.string.contact_picture),
-                    context.getString(R.string.contact_personal),
-                ),
-            )
-            addView(infoRow(context, "☎", "+1 555-453-2345", context.getString(R.string.contact_mobile)))
-            addView(infoRow(context, "✉", "danielleholmes@gmail.com", context.getString(R.string.contact_email)))
-            addView(primaryButton(context, R.string.contact_save) {}, matchWrap(top = 18))
-        }
+    ): View = contactStage(context, onBack, received = true, onAdvance = onBack)
 
     fun photoSelection(
         context: Context,
@@ -137,8 +137,17 @@ internal object TapShareDemoScreens {
             addView(ArtworkView(context, ArtworkView.Mode.LANDSCAPE), matchFixed(188, 138, top = 20))
             addView(label(context, R.string.photo_one_selected, 14f, MUTED), matchWrap(top = 10, bottom = 26))
             addView(title(context, R.string.photo_select_device, 20f))
-            addView(label(context, R.string.photo_looking, 14f, MUTED), matchWrap(top = 6, bottom = 20))
-            addView(deviceButton(context, onDevice), matchWrap())
+            addView(label(context, R.string.photo_looking, 14f, MUTED), matchWrap(top = 6, bottom = 4))
+            addView(
+                quickShareAnimation(
+                    context,
+                    R.raw.swatchie__sharing_send_scanning_unified,
+                    loop = true,
+                    R.string.photo_scanning_animation,
+                ),
+                matchFixed(60, 60, bottom = 12),
+            )
+            addView(deviceButton(context, onDevice).also(::animateTargetListIn), matchWrap())
         }
 
     fun photoRequest(
@@ -147,6 +156,15 @@ internal object TapShareDemoScreens {
         onAccept: () -> Unit,
     ): View =
         photoStage(context, onBack) {
+            addView(
+                quickShareAnimation(
+                    context,
+                    R.raw.swatchie__sharing_ready_to_receive_everyone,
+                    loop = true,
+                    R.string.photo_receive_ready_animation,
+                ),
+                matchFixed(24, 24, bottom = 10),
+            )
             addView(title(context, R.string.photo_incoming, 24f))
             addView(photoCard(context), matchWrap(top = 22, bottom = 24))
             addView(
@@ -169,8 +187,16 @@ internal object TapShareDemoScreens {
             addView(label(context, R.string.photo_progress, 34f, GREEN, Gravity.CENTER_HORIZONTAL), matchWrap(top = 24))
             addView(
                 ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal).apply {
-                    progress = 68
+                    progress = 0
                     progressTintList = ColorStateList.valueOf(GREEN)
+                    doOnPreDraw {
+                        ValueAnimator.ofInt(0, 68).apply {
+                            duration = QUICK_SHARE_PROGRESS_MS
+                            interpolator = progressMotion
+                            addUpdateListener { progress = it.animatedValue as Int }
+                            start()
+                        }
+                    }
                 },
                 matchFixed(ViewGroup.LayoutParams.MATCH_PARENT, 12, top = 12, bottom = 22),
             )
@@ -200,21 +226,19 @@ internal object TapShareDemoScreens {
     private fun contactStage(
         context: Context,
         onBack: () -> Unit,
-        sheetContent: LinearLayout.() -> Unit,
+        received: Boolean,
+        onAdvance: () -> Unit,
     ): View =
         FrameLayout(context).apply {
             setBackgroundColor(STAGE)
             addView(ArtworkView(context, ArtworkView.Mode.PORTRAIT), FrameLayout.LayoutParams(-1, -1))
-            addView(backButton(context, onBack), frameWrap(Gravity.TOP or Gravity.START, 18, 18))
             addView(
-                column(context).apply {
-                    background = rounded(SHEET, 30f, topOnly = true)
-                    elevation = dp(10).toFloat()
-                    setPadding(dp(22), dp(20), dp(22), dp(18))
-                    sheetContent()
+                ComposeView(context).apply {
+                    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+                    setContent { exactPixelContactSheet(received, onBack, onAdvance) }
                 },
-                FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM),
             )
+            addView(backButton(context, onBack), frameWrap(Gravity.TOP or Gravity.START, 18, 18))
         }
 
     private fun photoStage(
@@ -233,6 +257,114 @@ internal object TapShareDemoScreens {
             )
             addView(backButton(context, onBack), frameWrap(Gravity.TOP or Gravity.START, 18, 18))
         }
+
+    private fun quickShareAnimation(
+        context: Context,
+        animation: Int,
+        loop: Boolean,
+        description: Int,
+    ): LottieAnimationView =
+        LottieAnimationView(context).apply {
+            setAnimation(animation)
+            repeatMode = ValueAnimator.RESTART
+            repeatCount = if (loop) ValueAnimator.INFINITE else 0
+            contentDescription = context.getString(description)
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            playAnimation()
+        }
+
+    private fun animateTargetListIn(targets: View) {
+        targets.doOnPreDraw { view ->
+            view.pivotY = 0f
+            view.scaleY = 0f
+            view
+                .animate()
+                .scaleY(1f)
+                .setDuration(QUICK_SHARE_LIST_TWEEN_MS)
+                .setInterpolator(listRevealMotion)
+                .start()
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun exactPixelContactSheet(
+        received: Boolean,
+        onDismiss: () -> Unit,
+        onAdvance: () -> Unit,
+    ) {
+        val sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        val scope = rememberCoroutineScope()
+        val hideThenAdvance: () -> Unit = {
+            scope.launch {
+                sheetState.hide()
+                onAdvance()
+            }
+            Unit
+        }
+        MaterialTheme(
+            colorScheme =
+                lightColorScheme(
+                    primary = ComposeColor(GREEN),
+                    surface = ComposeColor(SHEET),
+                ),
+        ) {
+            ModalBottomSheet(
+                onDismissRequest = onDismiss,
+                sheetState = sheetState,
+                containerColor = ComposeColor(SHEET),
+                shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(start = 22.dp, end = 22.dp, bottom = 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = if (received) "Danielle Holmes" else "Camille Laurent",
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    Text(
+                        text = if (received) "Contact received" else "Share your contact info",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = ComposeColor(MUTED),
+                    )
+                    if (received) {
+                        Text("Picture · Personal")
+                        Text("+1 555-453-2345 · Mobile")
+                        Text("danielleholmes@gmail.com · Email")
+                        Button(onClick = hideThenAdvance, modifier = Modifier.fillMaxWidth()) { Text("Save contact") }
+                    } else {
+                        contactChoice("Picture", "Personal")
+                        contactChoice("+1 555-284-5555", "Mobile")
+                        contactChoice("camille@example.com", "Email")
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            OutlinedButton(onClick = hideThenAdvance, modifier = Modifier.weight(1f)) {
+                                Text("Receive only")
+                            }
+                            Button(onClick = hideThenAdvance, modifier = Modifier.weight(1f)) { Text("Share") }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun contactChoice(
+        primary: String,
+        secondary: String,
+    ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Checkbox(checked = true, onCheckedChange = {})
+            Column {
+                Text(primary)
+                Text(secondary, color = ComposeColor(MUTED))
+            }
+        }
+    }
 
     private fun photoCard(context: Context): View =
         horizontal(context).apply {
@@ -268,43 +400,6 @@ internal object TapShareDemoScreens {
                     setPadding(dp(14), 0, 0, 0)
                     addView(title(context, R.string.photo_device, 17f))
                     addView(label(context, R.string.photo_one_selected, 13f, MUTED), matchWrap(top = 2))
-                },
-                weightParams(1f),
-            )
-        }
-
-    private fun selectableRow(
-        context: Context,
-        primary: Int,
-        secondary: Int,
-        checked: Boolean,
-    ): View =
-        CheckBox(context).apply {
-            isChecked = checked
-            buttonTintList = ColorStateList.valueOf(GREEN)
-            text = "${context.getString(primary)}\n${context.getString(secondary)}"
-            textSize = 14f
-            setTextColor(TEXT)
-            gravity = Gravity.CENTER_VERTICAL
-            minHeight = dp(58)
-        }
-
-    private fun infoRow(
-        context: Context,
-        icon: String,
-        primary: String,
-        secondary: String,
-    ): View =
-        horizontal(context).apply {
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(0, dp(7), 0, dp(7))
-            addView(avatar(context, icon, 36), LinearLayout.LayoutParams(dp(36), dp(36)))
-            addView(
-                TextView(context).apply {
-                    text = "$primary\n$secondary"
-                    textSize = 14f
-                    setTextColor(TEXT)
-                    setPadding(dp(12), 0, 0, 0)
                 },
                 weightParams(1f),
             )
