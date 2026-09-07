@@ -7,9 +7,11 @@
       with BLE auto-discovery.
 
       Runtime (must be requested at app start, gated by API level):
-        * NEARBY_WIFI_DEVICES (API 33+) — required for any local-network
-          discovery/advertising. We never derive physical location from peer
-          scans, so we set neverForLocation per Google's guidance and skip
+        * ACCESS_LOCAL_NETWORK (API 37+) — required for mDNS discovery and
+          advertising plus direct TCP connections to nearby devices.
+        * NEARBY_WIFI_DEVICES (API 33+) — required for nearby Wi-Fi device
+          operations. We never derive physical location from peer scans, so
+          we set neverForLocation per Google's guidance and skip
           ACCESS_FINE_LOCATION on API 33+ devices.
         * POST_NOTIFICATIONS (API 33+) — used by the foreground transfer
           service notification (#21) and incoming-transfer notifications.
@@ -78,6 +80,13 @@
         android:name="android.permission.NEARBY_WIFI_DEVICES"
         android:usesPermissionFlags="neverForLocation"
         tools:targetApi="33" />
+
+    <!-- Android 17 gates NsdManager and direct local TCP/UDP traffic behind
+         this runtime permission for apps targeting API 37+. It is mandatory
+         because both discovery and file transfer depend on local networking. -->
+    <uses-permission
+        android:name="android.permission.ACCESS_LOCAL_NETWORK"
+        tools:targetApi="37" />
 
     <!-- Notification posting on API 33+. Pre-33 devices show notifications
          without a runtime prompt, so the manifest-level entry is gated. -->

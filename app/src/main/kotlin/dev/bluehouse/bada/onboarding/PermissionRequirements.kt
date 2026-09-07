@@ -30,6 +30,8 @@ import dev.bluehouse.bada.R
  *     Bluetooth Low Energy scans; older platform releases route nearby-device
  *     discovery through the location runtime permission.
  *   * `NEARBY_WIFI_DEVICES` and `POST_NOTIFICATIONS` only exist on API 33+.
+ *   * `ACCESS_LOCAL_NETWORK` only exists on API 37+. Android 17 gates
+ *     NsdManager discovery/advertising and direct local TCP/UDP traffic behind it.
  *   * `BLUETOOTH_ADVERTISE`, `BLUETOOTH_SCAN`, and `BLUETOOTH_CONNECT` only
  *     exist on API 31+ — on API ≤ 30 the legacy install-time
  *     `BLUETOOTH` / `BLUETOOTH_ADMIN`
@@ -38,8 +40,9 @@ import dev.bluehouse.bada.R
  *
  * Each requirement is classified as **mandatory** or **optional**:
  *   * Mandatory denials gate the app's primary discovery path.
- *     Currently `NEARBY_WIFI_DEVICES` is the only mandatory permission —
- *     without it Phase 1 cannot run mDNS discovery at all.
+ *     `NEARBY_WIFI_DEVICES` and, on API 37+, `ACCESS_LOCAL_NETWORK` are
+ *     mandatory because Phase 1 needs both nearby Wi-Fi access and local
+ *     mDNS/TCP networking.
  *   * Optional denials let the app run in a degraded mode. Today that
  *     means missing notifications (silent transfers) or missing nearby
  *     BLE / off-LAN discovery.
@@ -86,6 +89,9 @@ internal object PermissionRequirements {
         }
         if (sdkInt >= Build.VERSION_CODES.TIRAMISU) {
             result += tiramisuPermissions()
+        }
+        if (sdkInt >= ANDROID_17_API) {
+            result += android17Permissions()
         }
         return result
     }
@@ -151,6 +157,17 @@ internal object PermissionRequirements {
             ),
         )
 
+    @RequiresApi(ANDROID_17_API)
+    private fun android17Permissions(): Requirement =
+        Requirement(
+            permission = Manifest.permission.ACCESS_LOCAL_NETWORK,
+            titleRes = R.string.permission_local_network_title,
+            rationaleRes = R.string.permission_local_network_rationale,
+            grantedRes = R.string.permission_status_granted,
+            deniedRes = R.string.permission_status_denied,
+            optional = false,
+        )
+
     /**
      * Returns the permissions from [requirementsFor] that are not yet
      * granted on this device. Used by [PermissionsOnboardingActivity] to
@@ -189,4 +206,7 @@ internal object PermissionRequirements {
                 .toSet()
         return missing.all(optionalSet::contains)
     }
+
+    /** API level for Android 17; the installed API 37 SDK has no named VERSION_CODES field. */
+    private const val ANDROID_17_API = 37
 }

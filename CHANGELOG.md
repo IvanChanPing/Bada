@@ -1,5 +1,13 @@
 # Changelog
 
+- Add Android 17 local-network runtime permission handling and regression coverage.
+
+## 2026-09-07 — Android 17 local-network permission
+
+- Declared the API 37 `ACCESS_LOCAL_NETWORK` runtime permission required for NsdManager discovery/advertising and direct local TCP/UDP traffic.
+- Added it as a mandatory Android 17 onboarding requirement, with an explicit user-facing explanation; denial now follows the existing launcher and Quick Settings tile permission gates instead of starting the normal receiver path without LAN access.
+- Added API-level and manifest regression coverage. XML parsing, source assertions, and diff checks passed; Android compilation and on-device Android 17 UI validation were not run in this change.
+
 ## 2026-08-15 — Exact APK-derived Tap to Share UI demo
 
 - Replaced the reconstructed contact motion with the Pixel GMS 26.30.32 Material modal-sheet owner, state split, and hide-before-callback lifecycle recovered from `ContactExchangeChimeraActivity` and its Pixel renderer.

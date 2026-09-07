@@ -65,4 +65,34 @@ class PermissionRequirementsTest {
                 .all(PermissionRequirements.Requirement::optional),
         )
     }
+
+    @Test
+    fun `api 37 adds mandatory local network access`() {
+        val requirements = PermissionRequirements.requirementsFor(sdkInt = 37)
+
+        assertEquals(
+            listOf(
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.NEARBY_WIFI_DEVICES,
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.ACCESS_LOCAL_NETWORK,
+            ),
+            requirements.map(PermissionRequirements.Requirement::permission),
+        )
+        assertFalse(
+            requirements.first { it.permission == Manifest.permission.NEARBY_WIFI_DEVICES }.optional,
+        )
+        assertFalse(
+            requirements.first { it.permission == Manifest.permission.ACCESS_LOCAL_NETWORK }.optional,
+        )
+        assertTrue(
+            requirements
+                .filterNot {
+                    it.permission == Manifest.permission.NEARBY_WIFI_DEVICES ||
+                        it.permission == Manifest.permission.ACCESS_LOCAL_NETWORK
+                }.all(PermissionRequirements.Requirement::optional),
+        )
+    }
 }

@@ -291,6 +291,10 @@
     <string name="permission_nearby_wifi_title">Nearby Wi-Fi devices</string>
     <string name="permission_nearby_wifi_rationale">Required to discover and advertise to other Quick Share devices on the same Wi-Fi network. Quick Share never uses this to determine your physical location.</string>
 
+    <!-- ACCESS_LOCAL_NETWORK (API 37+). -->
+    <string name="permission_local_network_title">Local network</string>
+    <string name="permission_local_network_rationale">Required on Android 17 and newer to discover nearby devices and transfer files directly over your local network.</string>
+
     <!-- POST_NOTIFICATIONS (API 33+). -->
     <string name="permission_notifications_title">Notifications</string>
     <string name="permission_notifications_rationale">Used to show the foreground transfer service indicator and to alert you about incoming files. Without this permission, transfers still work but you will not be notified about them.</string>

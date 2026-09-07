@@ -35,9 +35,9 @@ import dev.bluehouse.bada.databinding.ItemPermissionRowBinding
  *   4. Let the user proceed once mandatory permissions are granted —
  *      `POST_NOTIFICATIONS` denials are non-blocking (degraded mode).
  *
- * Pre-33 devices have no runtime permissions to request; the activity
- * detects that path and shows a "you're all set" state instead of a
- * permission grid.
+ * The exact permission rows vary by API level; API 37 adds mandatory local
+ * network access. If a future supported API has no runtime requirements, the
+ * activity shows a "you're all set" state instead of a permission grid.
  */
 class PermissionsOnboardingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPermissionsOnboardingBinding

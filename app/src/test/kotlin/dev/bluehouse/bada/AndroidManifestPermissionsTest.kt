@@ -47,6 +47,15 @@ class AndroidManifestPermissionsTest {
     }
 
     @Test
+    fun `android 17 local network permission declared`() {
+        val block = usesPermissionBlockFor("android.permission.ACCESS_LOCAL_NETWORK")
+        assertTrue(
+            "ACCESS_LOCAL_NETWORK must target API 37+ local-network enforcement",
+            block.contains("tools:targetApi=\"37\""),
+        )
+    }
+
+    @Test
     fun `post notifications permission declared`() {
         assertTrue(
             "POST_NOTIFICATIONS must be declared (gated by API 33+)",

@@ -81,8 +81,9 @@ internal class BadaQuickShareTileService : TileService() {
      * [TileVisibilityElevationHolder.restoreIfArmed].
      */
     private fun openReceiveSheet() {
-        // Being discoverable needs the mandatory discovery permission
-        // (NEARBY_WIFI_DEVICES on API 33+). If it isn't granted yet,
+        // Being discoverable needs the mandatory discovery permissions
+        // (NEARBY_WIFI_DEVICES on API 33+ and ACCESS_LOCAL_NETWORK on API 37+).
+        // If either applicable permission isn't granted yet,
         // bumping visibility would light up a receiver that can never
         // actually advertise — so bounce the user into the app instead,
         // which routes to the permissions onboarding. This mirrors
