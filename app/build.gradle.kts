@@ -172,7 +172,11 @@ fun registerBundledRadioHelper(variantName: String) {
             into(generatedAssets)
         }
 
-    android.sourceSets.getByName(variantName).assets.srcDir(generatedAssets)
+    android
+        .sourceSets
+        .getByName(variantName)
+        .assets
+        .srcDir(generatedAssets)
     tasks.matching { it.name == "merge${capitalizedVariant}Assets" }.configureEach {
         dependsOn(bundleTask)
     }
