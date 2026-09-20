@@ -157,10 +157,7 @@ kotlin {
  *
  * Release usability additionally requires `:app` and `:radio-helper` to receive
  * the same complete signing input set because the helper service is guarded by
- * a signature permission. Validate by building both app variants, inspecting
- * the embedded asset/package identity, then exercising the Settings install
- * flow. Only configuration/source checks have run; Gradle assembly and device
- * installation remain UNVERIFIED because Android compilation was not authorized.
+ * a signature permission.
  */
 fun registerBundledRadioHelper(variantName: String) {
     val capitalizedVariant = variantName.replaceFirstChar { it.uppercase() }

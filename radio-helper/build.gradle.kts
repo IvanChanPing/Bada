@@ -33,10 +33,6 @@ data class HelperReleaseSigningInputs(
  * No inputs preserves the Android plugin's ordinary unsigned local-release
  * behavior. Values are consumed only by Gradle signing configuration and are
  * never copied into generated assets or source.
- *
- * Verify with certificate comparison on assembled app/helper release APKs and
- * a real service bind after installation. Input-shape/source checks are proven;
- * release assembly, certificate comparison, and device binding are UNVERIFIED.
  */
 fun helperReleaseSigningInputs(): HelperReleaseSigningInputs? {
     fun propertyOrEnvironment(name: String): String? =

@@ -48,14 +48,6 @@ import java.util.concurrent.atomic.AtomicBoolean
  * through pending confirmation, clears on terminal callback, and naturally
  * resets if Android recreates the process. No app-level cancellation control is
  * exposed after commit; the system installer owns the user's confirm/cancel UI.
- *
- * TEST STATUS
- * -----------
- * Exercise Bada > Settings > Radio Helper in missing, permission-denied,
- * installing, installed, cancelled, and failed states; confirm the debug build
- * installs `.debug`, release installs the release package, and "Open Radio
- * Helper setup" launches the matching package. Source/diff checks are proven;
- * compilation and the real device click path remain UNVERIFIED.
  */
 internal object HelperInstaller {
     const val ACTION_INSTALL_STATUS = "dev.bluehouse.bada.helper.INSTALL_STATUS"

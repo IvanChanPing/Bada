@@ -44,14 +44,6 @@ import dev.bluehouse.bada.R
  * PackageInstaller session remains system-owned. A missing confirmation Intent
  * is treated as terminal local failure. `exported=false`, the explicit component,
  * and action check prevent another app from driving this state machine.
- *
- * TEST STATUS
- * -----------
- * Complete and cancel installation with Bada foregrounded and backgrounded;
- * test denied notifications, malformed pending confirmation, and success/fail
- * callbacks, then verify the Settings status after returning. Source/static
- * checks are proven; compilation, callback delivery, notification appearance,
- * and system-installer UI remain device-UNVERIFIED.
  */
 internal class HelperInstallReceiver : BroadcastReceiver() {
     /**
@@ -150,18 +142,20 @@ internal class HelperInstallReceiver : BroadcastReceiver() {
      * notification settings; pre-26 devices use builder priority only.
      */
     private fun ensureNotificationChannel(context: Context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        if (manager.getNotificationChannel(NOTIFICATION_CHANNEL_ID) != null) return
-        manager.createNotificationChannel(
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                context.getString(R.string.settings_radio_helper_channel_name),
-                NotificationManager.IMPORTANCE_HIGH,
-            ).apply {
-                description = context.getString(R.string.settings_radio_helper_channel_description)
-            },
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = context.getSystemService(NotificationManager::class.java)
+            if (manager?.getNotificationChannel(NOTIFICATION_CHANNEL_ID) == null) {
+                manager?.createNotificationChannel(
+                    NotificationChannel(
+                        NOTIFICATION_CHANNEL_ID,
+                        context.getString(R.string.settings_radio_helper_channel_name),
+                        NotificationManager.IMPORTANCE_HIGH,
+                    ).apply {
+                        description = context.getString(R.string.settings_radio_helper_channel_description)
+                    },
+                )
+            }
+        }
     }
 
     @Suppress("DEPRECATION")

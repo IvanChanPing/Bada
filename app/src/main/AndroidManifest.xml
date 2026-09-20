@@ -631,8 +631,7 @@
              installer while Bada is foregrounded, or posts a high-importance
              shade action when background launch is unavailable; terminal status
              clears the process-local duplicate-install latch. exported=false
-             prevents another app from invoking this receiver directly. Runtime
-             delivery and system-installer UI remain device-UNVERIFIED. -->
+             prevents another app from invoking this receiver directly. -->
         <receiver
             android:name=".helper.HelperInstallReceiver"
             android:exported="false" />

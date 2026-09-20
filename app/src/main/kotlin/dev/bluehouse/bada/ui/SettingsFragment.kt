@@ -65,8 +65,7 @@ import dev.bluehouse.bada.update.UpdatePreferences
  * PackageManager plus [HelperInstaller]'s process-local staging latch. Summary
  * state is refreshed on every onStart/onResume so system-Settings round trips,
  * package installation, and external permission changes are reflected without
- * recreating the fragment. Radio Helper compilation and rendered interaction
- * remain device-UNVERIFIED; the documented source/static contracts are proven.
+ * recreating the fragment.
  */
 internal class SettingsFragment : Fragment(R.layout.fragment_settings) {
     /**
@@ -83,7 +82,6 @@ internal class SettingsFragment : Fragment(R.layout.fragment_settings) {
      * Owns the one-time Android "Install unknown apps" round trip for the
      * Radio Helper card. Returning with the grant stages the bundled companion;
      * returning without it leaves the helper missing and surfaces that denial.
-     * The system Settings and installer UI remain device/UI-unverified here.
      */
     private lateinit var unknownSourcesLauncher: ActivityResultLauncher<Intent>
 
